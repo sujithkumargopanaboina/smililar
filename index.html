@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>smilarity</title>
+</head>
+<script type="text/javascript">
+	function similarity(a) 
+	{
+		console.log(a)
+		var s1,s2,c;
+		s1=document.getElementById("first").value;
+		s2=a;
+  		var longer = s1;
+  		var shorter = s2;
+  		if (s1.length < s2.length) 
+  		{
+    		longer = s2;
+    		shorter = s1;
+  		}
+  		var longerLength = longer.length;
+  		if (longerLength == 0) 
+  		{
+    		return 1.0;
+  		}
+  		c=(longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+  		console.log(c);
+  		return c
+  		
+	}
+
+
+	function editDistance(s1,s2) 
+	{
+		var s1,s2;
+	  /*s1 = s1.toLowerCase();
+	  s2 = s2.toLowerCase();*/
+
+	  var costs = new Array();
+	  for (var i = 0; i <= s1.length; i++) {
+	    var lastValue = i;
+	    for (var j = 0; j <= s2.length; j++) {
+	      if (i == 0)
+	        costs[j] = j;
+	      else {
+	        if (j > 0) {
+	          var newValue = costs[j - 1];
+	          if (s1.charAt(i - 1) != s2.charAt(j - 1))
+	            newValue = Math.min(Math.min(newValue, lastValue),
+	              costs[j]) + 1;
+	          costs[j - 1] = lastValue;
+	          lastValue = newValue;
+	        }
+	      }
+	    }
+	    if (i > 0)
+	      costs[s2.length] = lastValue;
+	  }
+	  return costs[s2.length];
+	}
+function arraySort(arr) {
+
+  var jsonObj = {};
+  var values = [];
+  var result = [];
+  for (var i = 0; i < arr.length; i++) {
+    jsonObj[arr[i][1]] = arr[i][0];
+
+  }
+  values = Object.keys(jsonObj).sort();
+
+  for (var j = 0; j < values.length; j++) {
+    result.push([jsonObj[values[j]], values[j]]);
+  }
+  return result;
+}
+	function mainf()
+	{	
+		
+		var element = document.getElementById("main");
+		var arr = element.getElementsByTagName("p");
+		var k=[]
+		//for (let x in arr)
+		for(let i=0;i<arr.length;i++)
+		{
+    			var s=([arr[i].innerHTML,similarity(arr[i].innerHTML)]);
+    			k.push(s)
+    			k=arraySort(k)
+    			k.reverse();
+		}
+		
+		for (let i = 0; i < 5; i++) 
+		{
+   			document.getElementById('top5').innerHTML += '<li>' + k[i] + '</li>';
+    		console.log(k[i]);
+		}
+
+	}
+	
+</script>
+<body>
+	<div id="main">
+		<p>my name is sujithkumar</p>
+		<p>he  is sujithkumar</p>
+		<p>hello Mr.Sujithkumar</p>
+		<p>hi how are you sujith , i hope you are doing well</p>
+		<p>meet Mr.Ruddra</p>
+		<p>naveen</p>
+	</div>
+	Enter the text  : <input id="first"><br><br>
+	
+	<button onclick="mainf()">check</button>
+	
+	</head>
+		<ul id="top5">
+		</ul>
+</body>
+</html>
